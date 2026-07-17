@@ -21,6 +21,11 @@ USER user
 
 # Copy requirements and install dependencies
 COPY --chown=user requirements.txt $HOME/app/
+
+# Install PyTorch CPU first to prevent downloading heavy CUDA binaries (reduces image size from 3GB to <500MB)
+RUN pip install --no-cache-dir --user torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# Install the remaining dependencies
 RUN pip install --no-cache-dir --user -r requirements.txt
 
 # Copy the rest of the application files
