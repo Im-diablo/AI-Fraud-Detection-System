@@ -60,6 +60,13 @@ def _model_ready(path: str) -> bool:
         return any(p.iterdir())
     return False
 
+# ── Download models from Google Drive if not present ─────────────────────────
+try:
+    from download_models import ensure_models_extracted
+    ensure_models_extracted()
+except Exception as e:
+    print(f"Warning: Could not run model downloader on startup: {e}")
+
 ML_READY  = _model_ready("models/xgboost_fraud.ubj") or _model_ready("models/xgboost_fraud.pkl")
 NLP_READY = _model_ready("models/distilbert_fraud")
 CV_READY  = _model_ready("models/siamese_resnet18.pt")
