@@ -64,6 +64,21 @@ def ensure_models_extracted():
     
     try:
         download_file_from_google_drive(GOOGLE_DRIVE_FILE_ID, ZIP_PATH)
+        
+        # Verify the downloaded file is a valid zip archive
+        if not zipfile.is_zipfile(ZIP_PATH):
+            print("ERROR: The downloaded file is not a valid zip file.")
+            if ZIP_PATH.exists():
+                size = ZIP_PATH.stat().st_size
+                print(f"Downloaded file size: {size} bytes")
+                try:
+                    with open(ZIP_PATH, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read(1000)
+                        print(f"File content snippet:\n{content}")
+                except Exception as read_err:
+                    print(f"Could not read file snippet: {read_err}")
+            raise ValueError("Downloaded file is not a valid zip archive (likely blocked or rate-limited by Google Drive).")
+            
         print("Extracting MODELS.zip...")
         with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
             namelist = zip_ref.namelist()
