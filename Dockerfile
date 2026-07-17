@@ -12,7 +12,7 @@ WORKDIR $HOME/app
 # We temporarily switch to root to run apt-get
 USER root
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,8 +26,8 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # Copy the rest of the application files
 COPY --chown=user . $HOME/app/
 
-# Expose port 7860 (the port Hugging Face Spaces expects)
-EXPOSE 7860
+# Expose port 8000 (standard port for web hosting services)
+EXPOSE 8000
 
-# Run the FastAPI app via Uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run the FastAPI app via Uvicorn (binds to PORT env variable if set, otherwise defaults to 8000)
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}"]

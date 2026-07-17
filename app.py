@@ -96,6 +96,12 @@ async def index():
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
+@app.get("/health")
+async def health_check():
+    """Simple health check endpoint to keep the app active."""
+    return JSONResponse({"status": "healthy"})
+
+
 @app.get("/api/status")
 async def get_status():
     """Return which models are currently trained and ready."""
