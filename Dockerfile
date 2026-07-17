@@ -31,8 +31,14 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # Copy the rest of the application files
 COPY --chown=user . $HOME/app/
 
+# Create models directory with correct ownership before running the download script
+USER root
+RUN mkdir -p $HOME/app/models && chown -R user:user $HOME/app
+USER user
+
 # Download and extract the models during the build phase (bakes models into the image)
-RUN python download_models.py
+# Using -u for unbuffered output so all print statements appear in build logs
+RUN python -u download_models.py || { echo "=== DOWNLOAD FAILED ===" && exit 1; }
 
 # Expose port 8000 (standard port for web hosting services)
 EXPOSE 8000
