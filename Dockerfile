@@ -1,5 +1,5 @@
 # Use official lightweight Python image
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 # Create a non-root user (Hugging Face Spaces runs as user 1000 by default)
 RUN useradd -m -u 1000 user
