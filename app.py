@@ -96,9 +96,9 @@ async def index():
     return HTMLResponse(content=html_path.read_text(encoding="utf-8"))
 
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health_check():
-    """Simple health check endpoint to keep the app active."""
+    """Simple health check endpoint to keep the app active (supports GET and HEAD for UptimeRobot)."""
     return JSONResponse({"status": "healthy"})
 
 
