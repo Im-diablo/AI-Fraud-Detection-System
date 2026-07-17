@@ -1,6 +1,7 @@
 import os
 import zipfile
 import shutil
+import re
 from pathlib import Path
 import requests
 
@@ -25,17 +26,25 @@ def download_file_from_google_drive(file_id, destination):
     print(f"Downloading models from Google Drive (ID: {file_id})...")
     url = "https://docs.google.com/uc?export=download"
     session = requests.Session()
-    response = session.get(url, params={'id': file_id, 'confirm': 't'}, stream=True)
     
-    token = None
-    for key, value in response.cookies.items():
-        if key.startswith('download_warning'):
-            token = value
-            break
-            
-    if token:
-        response = session.get(url, params={'id': file_id, 'confirm': token}, stream=True)
+    # Send request to docs.google.com
+    response = session.get(url, params={'id': file_id}, stream=True)
+    
+    # Check if we hit the large file scan warning page
+    if "Google Drive - Virus scan warning" in response.text:
+        print("Bypassing Google Drive virus scan warning page...")
         
+        # Extract action URL from the HTML form
+        action_match = re.search(r'action="([^"]+)"', response.text)
+        action_url = action_match.group(1) if action_match else "https://drive.usercontent.google.com/download"
+        
+        # Extract hidden input fields (confirm token, uuid, id, etc.)
+        inputs = re.findall(r'<input\s+type=["\']hidden["\']\s+name=["\']([^"\']+)["\']\s+value=["\']([^"\']+)["\']\s*/?>', response.text)
+        params = {name: val for name, val in inputs}
+        
+        # Send second request to the action URL with the parsed parameters
+        response = session.get(action_url, params=params, stream=True)
+    
     total_downloaded = 0
     with open(destination, "wb") as f:
         for chunk in response.iter_content(chunk_size=1024 * 1024):  # 1MB chunks
