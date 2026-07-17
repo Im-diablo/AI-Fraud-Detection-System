@@ -31,6 +31,9 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # Copy the rest of the application files
 COPY --chown=user . $HOME/app/
 
+# Download and extract the models during the build phase (bakes models into the image)
+RUN python download_models.py
+
 # Expose port 8000 (standard port for web hosting services)
 EXPOSE 8000
 

@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 import requests
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).parent
 MODELS_DIR = BASE_DIR / "models"
 ZIP_PATH = BASE_DIR / "MODELS.zip"
 GOOGLE_DRIVE_FILE_ID = "1BNgF215iWN5GJoyP9BH2X_-gn2G0rrmW"
