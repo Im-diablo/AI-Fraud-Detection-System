@@ -1,16 +1,20 @@
----
-title: AI Fraud Detection System
-emoji: 🛡️
-colorFrom: red
-colorTo: beige
-sdk: gradio
-app_file: app_hf.py
-pinned: false
----
-
 # AI-Powered Financial Fraud Detection System
-> A Multi-Modal Real-Time Anti-Fraud Pipeline Powered by FastAPI, XGBoost, DistilBERT, and Siamese ResNet18.
 
+> ## 📦 Dataset & Pre-trained Models — Google Drive
+>
+> **`DATASET.zip`** and **`MODELS.zip`** are **not included in this repository** due to file size limits.  
+> They are hosted on **Google Drive** for easy download.
+>
+> | File | Description | Download Link |
+> | :--- | :--- | :--- |
+> | **DATASET.zip** | All training datasets (tabular, NLP, signature) | **[DATASET.zip](https://drive.google.com/file/d/1-jHFPe98lGFi1zaJbSF3vcosQKbiNVes/view?usp=sharing)** |
+> | **MODELS.zip** | Pre-trained XGBoost, DistilBERT & Siamese ResNet18 checkpoints | **[MODELS.zip](https://drive.google.com/file/d/1BNgF215iWN5GJoyP9BH2X_-gn2G0rrmW/view?usp=sharing)** |
+>
+> After downloading, extract **`DATASET.zip`** into `data/` and **`MODELS.zip`** into `models/` before running the app or training scripts.
+
+---
+
+> A Multi-Modal Real-Time Anti-Fraud Pipeline Powered by FastAPI, XGBoost, DistilBERT, and Siamese ResNet18.
 
 ---
 
